@@ -1,0 +1,50 @@
+Intalar python con chocolatey:
+choco install python --version=3.9.7 --allow-downgrade
+o
+choco install python --version=3.10.11 --force
+
+Añadir a variables de entorno:
+En Variables de sistema - path:
+C:\Python39\Scripts
+C:\Python39
+
+Comprobar desde cmd:
+python --version
+
+
+Rasa License Key:
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMTQ5ZDUwZS1mYzc5LTQ0ZTQtYTM1Yi05Yzg3ZmJiNTM5ZjUiLCJpYXQiOjE3MzcxMDE1NTIsIm5iZiI6MTczNzEwMTU0Nywic2NvcGUiOiJyYXNhOnBybyByYXNhOnBybzpjaGFtcGlvbiByYXNhOnZvaWNlIiwiZXhwIjoxODMxNzA5NTQ3LCJlbWFpbCI6ImRvbWluZ3VlemFsYWNpZEBnbWFpbC5jb20iLCJjb21wYW55IjoiUmFzYSBDaGFtcGlvbnMifQ.EaCzKP8yAKgzY8cJqvkCM5RCNfTB8yEKTifjmHghf40GDud3cwqHiZ9VCChmTxk0Jh6Kw5sSlaXMfaDctOMsdqx5VUdXwInDVVmsqvdWa-o5ye6bRfEJ5R-P4VnG54XS9SVLbBgxdjYJRDeZXz04Yfj7ufGLWX4uYi8wippy-nGFKabcjlj0iSSAr08oFIj6ByRUprXW-KqaS26E7Uyr81qWzjb_s57zcf3Pa0N8L4uBkjlU0zr07aGR4vrdvOMXW-NdvSN72UMqVYTbL9HQAOWxp01XWkzW8zknKMIdLBvOTi12AE9hly2N4noXNH5f0fLcgogISYItqbsT_zMX3Q
+
+Tutoriales youtube:
+https://www.youtube.com/watch?v=En7L6bZQcPA
+https://www.youtube.com/playlist?list=PL75e0qA87dlHPWoD4c-NrYszndgq-NFz3
+
+Guia de Instalacion:
+https://rasa.com/docs/rasa-pro/installation/python/installation/?utm_campaign=2024-01-Personal-Edition-License-Key-Request&utm_medium=email&_hsmi=292413219&utm_content=292413219&utm_source=hs_automation
+
+Crear y activar entorno virtual:
+1. Instalar virtualenv:
+   pip install virtualenv
+
+2. Crear entorno virtual:
+   virtualenv venv
+
+3. Activar entorno virtual:
+   En PowerShell:
+   .\venv\Scripts\Activate
+   En cmd:
+   venv\Scripts\activate
+
+4. Verificar entorno virtual:
+   python --version
+
+
+rasa configuration:
+pip3 install -U pip
+python -m venv ./venv
+.\venv\Scripts\activate
+pip3 install -U pip
+pip3 install rasa
+
+new project:
+rasa init
