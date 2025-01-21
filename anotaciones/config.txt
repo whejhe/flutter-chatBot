@@ -1,3 +1,7 @@
+Enlaces:
+https://github.com/SajixInc/Rasabot
+https://github.com/AbhiSharma1999/RASA-Chatbot
+
 Intalar python con chocolatey:
 choco install python --version=3.9.7 --allow-downgrade
 o
@@ -10,7 +14,6 @@ C:\Python39
 
 Comprobar desde cmd:
 python --version
-
 
 Rasa License Key:
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJmMTQ5ZDUwZS1mYzc5LTQ0ZTQtYTM1Yi05Yzg3ZmJiNTM5ZjUiLCJpYXQiOjE3MzcxMDE1NTIsIm5iZiI6MTczNzEwMTU0Nywic2NvcGUiOiJyYXNhOnBybyByYXNhOnBybzpjaGFtcGlvbiByYXNhOnZvaWNlIiwiZXhwIjoxODMxNzA5NTQ3LCJlbWFpbCI6ImRvbWluZ3VlemFsYWNpZEBnbWFpbC5jb20iLCJjb21wYW55IjoiUmFzYSBDaGFtcGlvbnMifQ.EaCzKP8yAKgzY8cJqvkCM5RCNfTB8yEKTifjmHghf40GDud3cwqHiZ9VCChmTxk0Jh6Kw5sSlaXMfaDctOMsdqx5VUdXwInDVVmsqvdWa-o5ye6bRfEJ5R-P4VnG54XS9SVLbBgxdjYJRDeZXz04Yfj7ufGLWX4uYi8wippy-nGFKabcjlj0iSSAr08oFIj6ByRUprXW-KqaS26E7Uyr81qWzjb_s57zcf3Pa0N8L4uBkjlU0zr07aGR4vrdvOMXW-NdvSN72UMqVYTbL9HQAOWxp01XWkzW8zknKMIdLBvOTi12AE9hly2N4noXNH5f0fLcgogISYItqbsT_zMX3Q
