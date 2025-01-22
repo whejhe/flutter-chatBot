@@ -1,3 +1,5 @@
+Tutorial: https://www.youtube.com/watch?v=RVoFqxmG8p0&t=10s
+
 Descargar he instalar Anaconda:
 https://www.anaconda.com/download/success
 
