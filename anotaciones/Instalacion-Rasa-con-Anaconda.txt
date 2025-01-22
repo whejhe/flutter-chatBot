@@ -1,0 +1,30 @@
+Descargar he instalar Anaconda:
+https://www.anaconda.com/download/success
+
+Abrimos el programa y Ejecutamos la opcion de Terminal:
+Comprobamos version de python:
+python --version
+
+Si la version es mayor que la que pueda soportar rasa le expecificamos que queremos 
+usar una anterior al crear el entorno:
+conda create -n install_demo python=3.10
+
+Una vez instalado tenemos que activarlo:
+conda activate install_demo
+
+Desintalamos cualquier posible version anterior de pip:
+python -m pip uninstall pip
+python -m ensurepip
+python -m pip install -U pip
+
+Ya podemos instalar rasa:
+pip install rasa
+
+Comprobamos instalacion con:
+rasa -h
+
+Vamos a la carpeta donde queramos iniciar el projecto:
+cd C:\Users\noBody\Documents\RasaProjects\install_demo
+
+Ejecutamos:
+rasa init
