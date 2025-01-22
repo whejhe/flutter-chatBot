@@ -1,0 +1,26 @@
+Descargar SDK de Flutter:
+https://docs.flutter.dev/get-started/install/windows/mobile
+
+Colocamos la carpeta descomprimida en:
+C:\flutter
+
+Añadir Flutter a las Variables de Entorno:
+En Variables de Sistema - Path:
+C:\flutter\bin
+
+Comprobamos desde cmd con el comando:
+Flutter
+flutter --version
+flutter doctor
+
+
+Crear proyectos desde visual estudio
+Añadir Extensiones:
+- Dart
+- Flutter
+
+Nuevo Proyecto:
+- Desde View - Command Palette - Flutter new project (Seleccionamos el directorio)
+
+Ejecutar Proyecto con:
+flutter run
