@@ -63,3 +63,6 @@ o
 rasa train && rasa model prune // Para eliminar modelos antiguos
 
 rasa run --enable-api --cors "*"
+
+Entrenar con datos predeterminados:
+pip install rasa[spacy]

@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   speech_to_text: ^6.1.0
-  flutter_tts: ^3.8.5
+  flutter_tts: ^4.2.2
   http: ^0.13.5
   cupertino_icons: ^1.0.8
   json: 0.20.4
