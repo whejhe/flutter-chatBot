@@ -1,3 +1,4 @@
+# pubspec.yaml
 name: flutter_chatbot
 description: "A new Flutter project."
 
@@ -11,16 +12,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  speech_to_text: ^6.1.0
+  flutter_tts: ^3.8.5
+  http: ^0.13.5
   cupertino_icons: ^1.0.8
-  http: ^0.13.3
   json: 0.20.4
   path_provider: ^2.0.1
   path: ^1.8.0
   flutter_secure_storage: ^6.0.0
   logging: ^1.0.0
+  
   flutter_localizations:
     sdk: flutter
   clay_containers: ^0.3.4
+
 
 dev_dependencies:
   flutter_test:

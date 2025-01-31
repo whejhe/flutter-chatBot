@@ -51,3 +51,15 @@ pip3 install rasa
 
 new project:
 rasa init
+
+
+Añadir dependencias:
+flutter pub get
+
+
+Ejectutar rasa:
+rasa train
+o
+rasa train && rasa model prune // Para eliminar modelos antiguos
+
+rasa run --enable-api --cors "*"

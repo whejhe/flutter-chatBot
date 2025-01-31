@@ -1,171 +1,155 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:logging/logging.dart';
-
-Logger _log = Logger('MyApp');
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter_tts/flutter_tts.dart';
 
 void main() {
-  Logger.root.level = Level.ALL;
-  Logger.root.onRecord.listen((record) {
-    _log.info('${record.level.name}: ${record.time}: ${record.message}');
-  });
-  runApp(MyApp());
+  runApp(AsistenteApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class AsistenteApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Chat App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false,
+      title: 'Asistente Virtual',
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: ChatScreen(),
     );
   }
 }
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
-
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final _textController = TextEditingController();
-  final List<ChatMessage> _messages = [];
-  bool _isLoading = false;
+  final TextEditingController _controller = TextEditingController();
+  final List<Map<String, String>> _messages = [];
+  final stt.SpeechToText _speech = stt.SpeechToText();
+  final FlutterTts _flutterTts = FlutterTts();
+  bool _isListening = false;
 
-  void _sendMessageToRasa() async {
-    _log.info('Enviando mensaje a Rasa...');
-    final message = _textController.text.trim();
-    if (message.isNotEmpty) {
-      setState(() {
-        _messages.add(ChatMessage(
-          text: message,
-          isMe: true,
-        ));
-        _textController.clear();
-      });
-      _isLoading = true;
-      _log.info('Mensaje enviado: $message');
+  @override
+  void initState() {
+    super.initState();
+    _initializeSpeech();
+  }
+
+  void _initializeSpeech() async {
+    await _speech.initialize();
+  }
+
+  void _sendMessage(String message) async {
+    if (message.isEmpty) return;
+
+    setState(() {
+      _messages.add({"user": message});
+      _controller.clear();
+    });
+
+    final response = await _sendToRasa(message);
+
+    setState(() {
+      _messages.add({"bot": response});
+    });
+
+    _speak(response);
+  }
+
+  Future<String> _sendToRasa(String message) async {
+    try {
       final response = await http.post(
-        Uri.parse('http://localhost:5005/conversations/default/respond'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'message': message}),
+        Uri.parse('http://localhost:5005/webhooks/rest/webhook'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"sender": "usuario", "message": message}),
       );
-      _log.info('Respuesta de Rasa: ${response.statusCode}');
-      _isLoading = false;
-      if (response.statusCode == 200) {
-        _log.info('Respuesta de Rasa: ${response.body}');
-        final responseData = jsonDecode(response.body);
-        final botResponse = responseData['messages'][0]['content'];
-        setState(() {
-          _messages.add(ChatMessage(
-            text: botResponse,
-            isMe: false,
-          ));
-        });
-      } else {
-        _log.info('Error al enviar mensaje: ${response.statusCode}');
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error al enviar mensaje'),
-            ),
-          );
-        }
-      }
+
+      final data = jsonDecode(response.body);
+      return data.isNotEmpty ? data[0]["text"] : "No entendí la pregunta.";
+    } catch (e) {
+      return "Error de conexión con el asistente.";
     }
   }
 
-  void _sendVoiceMessage() async {
-    // Implementar la lógica para enviar un mensaje de voz a Rasa
+  void _speak(String text) async {
+    await _flutterTts.speak(text);
+  }
+
+  void _listen() async {
+    if (!_isListening) {
+      bool available = await _speech.initialize();
+      if (available) {
+        setState(() => _isListening = true);
+        _speech.listen(onResult: (result) {
+          if (result.finalResult) {
+            _sendMessage(result.recognizedWords);
+            setState(() => _isListening = false);
+          }
+        });
+      }
+    } else {
+      setState(() => _isListening = false);
+      _speech.stop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chat App'),
-      ),
+      appBar: AppBar(title: Text('Asistente Virtual')),
       body: Column(
         children: [
           Expanded(
             child: ListView.builder(
               itemCount: _messages.length,
               itemBuilder: (context, index) {
-                return ChatMessageWidget(_messages[index]);
+                final msg = _messages[index];
+                return Align(
+                  alignment: msg.containsKey("user") ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: msg.containsKey("user") ? Colors.blue[200] : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      msg.containsKey("user") ? msg["user"]! : msg["bot"]!,
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                );
               },
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(8),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
-                    controller: _textController,
+                    controller: _controller,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Escribe un mensaje',
+                      hintText: "Escribe un mensaje...",
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: _sendMessageToRasa,
-                  child: Text('Enviar'),
+                IconButton(
+                  icon: Icon(Icons.send, color: Colors.blue),
+                  onPressed: () => _sendMessage(_controller.text),
                 ),
-                SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: _sendVoiceMessage,
-                  child: Icon(Icons.mic),
+                IconButton(
+                  icon: Icon(_isListening ? Icons.mic_off : Icons.mic, color: Colors.red),
+                  onPressed: _listen,
                 ),
               ],
             ),
           ),
-          if (_isLoading)
-            Center(
-              child: CircularProgressIndicator(),
-            ),
         ],
-      ),
-    );
-  }
-}
-
-class ChatMessage {
-  final String text;
-  final bool isMe;
-
-  ChatMessage({required this.text, required this.isMe});
-}
-
-class ChatMessageWidget extends StatelessWidget {
-  final ChatMessage message;
-
-  const ChatMessageWidget(this.message, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: message.isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.all(8),
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: message.isMe ? Colors.blue : Colors.grey,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Text(
-          message.text,
-          style: TextStyle(color: Colors.white),
-        ),
       ),
     );
   }
